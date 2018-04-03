@@ -1,0 +1,147 @@
+## Algorithm to sort relevent files from large data set 
+## then copy to new directory.
+
+# May need to install packages.
+# Go to tools -> install packages -> name of package
+
+
+
+#================================
+## importing the data
+#================================
+
+# call library
+
+library(data.table)
+
+# read in the spreadsheet data to table
+# very important we have the 'strings as factors' setting
+
+data_read = read.table("test_in.txt", header = TRUE, stringsAsFactors=FALSE)
+
+#Store in this data structure so we can manipulate it
+# This is basically an array
+input_data = data.table(data_read)
+
+#DontGetPayedENough
+#UsingCommentAsHashtags
+#CodingLyfe
+
+#?????? DBUG ??????????????
+# print it
+print(input_data)
+# check class
+class(input)data
+#??????????????????????????
+
+#-----------------------------------------
+## How this data structure works
+#-----------------------------------------
+
+# To see a certain number of rows we selesct two values
+# i,j where i is the row we start on and j the row we end on
+
+# For example to see the first two rows of the input data
+input_data[1:2]
+
+# the names of each column in the table work the same as variables
+# so if i had one column named 'num' for the number of animals
+# and i wanted every row that had 10 animals i would set num == 10
+
+# i want all files with 10 animals so
+# creating a new list to store them
+
+newlist = input_data[num == 10]
+
+
+# your spreadsheet will probably have different names at the start 
+# of each column so you just change 'num' above code to whatever
+# it is called in the spreadsheet
+
+#-----------------------------------------
+## Copy the files to harddrive
+#-----------------------------------------
+
+# you can remove these next two lines they are just to check that
+# the first file we have identified as having the right number of animals
+# corrosponds to what we have in the spreadsheet.
+
+# heres the first file that contains 10 animals
+first_file = newlist[1:1, files]
+
+# compare this with above result
+print(newlist[1:1, files])
+
+# Youre going to want to store the files you want coppied in the same folder
+# as where you save this program
+
+#===========================================
+## do the files exist in the current folder
+#===========================================
+
+## DBUG ????????????????????
+# does it exist at all
+
+#file.exists("g1.txt")
+##?????????????????????????
+
+# do the files returned from the list exist
+
+# first how many files are there
+list_length = length(newlist[,files])
+
+# now we can check if they are in the same folder as the program
+# the function file.exists checks if the file in our list exists.
+# It returns a logical i.e TRUE or FALSE depending on if it exists or not.
+# By looping over each element of the list we can check each file individually
+
+# if the file does not exists we want the program to stop and tell us
+# for this we add a conditional into the loop in the form of an if statement
+
+warning = TRUE
+
+for (i in 1:list_length){
+
+  
+  print(i)
+  
+  if (file.exists(newlist[i,files]) != warning) {
+    print(newlist[i,files])
+    stop("above file does not exist in directory")
+  }
+}
+
+# if we get to this point we can now be sure all the files we want to copy exist
+# yay
+
+# Now we need to pick where we want the files to be copied to
+# if you create a new folder inside the folder this program is in
+# we can send the files to this new folder.
+
+# as you can see below mine was called target _____________
+#                                                         !
+#                                                         V
+where_to_go = "/Users/Joe/Desktop/R_Sort/code/cass_code/target"
+
+# incase you missed it i made an arrow in the previous comment
+# to make my point... bad pun
+
+# To get the path (the /Users/Joe/...) go to the new folder you have created
+# Right click on it and you should get an option for 'copy address'.
+# This will let you put the path in. You might need to get rid of the
+# 'C/:' bit at the start of it. Copy and paste that into the above variable.
+# You also might have to change the back slashes in the path to front slashes
+# like i have
+
+# moving on 
+
+# now we copy the files to the new folder
+# the structure of copy is: from - which files you want to copy
+#                           to - where you want them to be copied to
+#                           overwrte - any files in the folder with the same 
+#                                      name will be replaced
+
+file.copy(from=newlist[,files], to=where_to_go, overwrite=TRUE, recursive=TRUE)
+
+
+
